@@ -13,24 +13,32 @@ Using the above simulator setup, derive an optimal NOC design. Optimality is mea
 The Matlab implementation of the model is attached.
 
 The design of NoC includes the following steps:
--   Deciding on an optimal topology: since we've been given a model beforehand we do not need to decide on the topology. However, as concluded from “Analysis and Implementation of Practical, Cost-Effective Network on Chips” by S.-J. Lee, K. Lee, and Yo", the Use of star topology and or a  mesh architecture is the most cost-effective and provides high speed serialization and programmable synchronization
+-   Deciding on an optimal topology: since we've been given a model beforehand we do not need to decide on the topology. However, as concluded from “Analysis and Implementation of Practical, Cost-Effective Network on Chips” by S.-J. Lee, K. Lee, and Yo", the Use of star topology and or a  mesh architecture is the most cost-effective and provides high-speed serialization and programmable synchronization
 
--   Routing: we have already been provided with instructions to use a bidirectional network to and from CPU or IO to System memory.Howerver , using a XY dimension ordered routing has proved to be deadlock free by Glass and Ni in 1992.
+-   Routing: we have already been provided with instructions to use a bidirectional network to and from CPU or IO to System memory. However, using an XY dimension ordered routing has proved to be deadlock-free by Glass and Ni in 1992.
 -   Traffic features: the traffic features such as the Read and write latency and bandwidth have been randomly generated using Matlab code.
 -   Size of buffers
 -   routing Deadlock avoidance
 
 Now our aim is to achieve the given requirements that would be achieved by the following methods:
-1) Traffic modelling : networks start to clag when injected traffic approaches saturation throughput. Performance can suffer well before network throughput limits if traffic has hot spots
-2) Using RL to optimise model parameters according to the traffic pattern.Parameters subjected to action primarily are the arbitration weights. However the isn't the only affecting factors towards power consumption and performance.See the design document.
+1) Traffic modelling: networks start to clag when injected traffic approaches saturation throughput. Performance can suffer well before network throughput limits if traffic has hot spots
+2) Using RL to optimise model parameters according to the traffic pattern. Parameters subjected to action primarily are the arbitration weights. However, the isn't the only affecting factors towards power consumption and performance. See the design document.
 
 
 About the setup model code:
-- operation frequency, datawidth, number of cycles, have been taken from the example provided.
-- number of bufferes =4 : CPU-> System Memory , IO-> System Memory , System Memory ->CPU, System Memory ->IO given buffer IDs :1,2,3,4
-- power threshold has been assumed to be 100
-- traffic and data written in the memory has been generated randomly
+- operation frequency, datawidth, and number of cycles, have been taken from the example provided.
+- number of bufferes =4 : CPU-> System Memory , IO-> System Memory , System Memory  ->CPU, System Memory ->IO given buffer IDs :1,2,3,4
+- The power threshold has been assumed to be 100
+- traffic and data written in the memory have been generated randomly
 - throttle amends the operating frequency by 10%
 - latency takes a random value between 1 and 100
-- bandwidth is the sum of both CPU and Io traffics
+- bandwidth is the sum of both CPU and IO traffics
 - see the noc.m file for the Matlab implementation of the model
+
+Solving the problem at hand:
+I propose LESSON (Learning Enabled
+Sleepy Storage Links and Routers in NoCs) to reduce both
+static and dynamic power consumption by power-gating inter-router links at low network utilization and moving the storage
+from inside the routers to inter-router links as the network
+utilization increases
+But since we've been given a round-robin arbiter to manage the latency performance and power consumption. we could use either Random Forest or SVR to update the weight values and reach the most optimum values for minimum latency and power consumption.
